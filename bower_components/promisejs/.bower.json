@@ -1,0 +1,14 @@
+{
+  "name": "promisejs",
+  "homepage": "https://github.com/stackp/promisejs",
+  "_release": "a8bc26e49b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "a8bc26e49b6ecef48fe8ca16da8ef80d50526146"
+  },
+  "_source": "https://github.com/stackp/promisejs.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/stackp/promisejs.git",
+  "_direct": true
+}

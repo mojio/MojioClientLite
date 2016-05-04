@@ -1,0 +1,24 @@
+{
+  "name": "MojioClientLite",
+  "version": "0.0.1",
+  "authors": [
+    "Pooya Paridel"
+  ],
+  "description": "Mojio Client SDK (Lite version)",
+  "main": "MojioClientLite.js",
+  "keywords": [
+    "Mojio",
+    "SDK",
+    "javascript",
+    "coffeescript"
+  ],
+  "license": "",
+  "homepage": "http://moj.io",
+  "private": true,
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "promisejs": "https://github.com/stackp/promisejs.git"
+  }
+}

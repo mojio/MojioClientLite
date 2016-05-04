@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+
+</head>
+<body>
+
+<script src="promise.js"></script>
+<script src="MojioClientLite.js"></script>
+
+<script>
+
+    var config = {
+        application: 'b66b06d1-e3f1-4ff0-b329-a89fd33e1915'
+    };
+    mojio_client = new MojioClientLite(config);
+
+    if (mojio_client.token())
+    {
+        console.log(mojio_client.config);
+        /*
+        mojio_client.get('/v2/me').then(function(err,res){
+            console.log("error");
+            console.log(err);
+
+            console.log("result");
+            console.log(res);
+
+        });
+        */
+
+
+        /*
+        mojio_client.get().mojios().then(function(err,res){
+            console.log("error");
+            console.log(err);
+
+            console.log("result");
+            console.log(res);
+        });
+        */
+
+        /*
+        mojio_client.get().apps().then(function(err,res){
+            console.log("error");
+            console.log(err);
+
+            console.log("result");
+            console.log(res);
+        });
+        */
+
+
+        /*
+        mojio_client.app({Id:'4a4017c1-ad7c-4611-aa84-467c1d1b5a3d'}).get().secret().then(function(err,res){
+            console.log("error");
+            console.log(err);
+
+            console.log("result");
+            console.log(res);
+        });
+        */
+
+        /*
+        mojio_client.get().vehicle('154ba6aa-893f-4967-b659-730330d109ab').then(function(err,res){
+            console.log("error");
+            console.log(err);
+
+            console.log("result");
+            console.log(res);
+        });
+        */
+
+        /*
+        mojio_client.get().vehicles().then(function(err,res){
+            v=res.Data[0]
+            v.Name="Test 123"
+            mojio_client.put('/v2/vehicles/' + v.Id,v).then(function(err,res) {
+                console.log("error");
+                console.log(err);
+
+                console.log("result");
+                console.log(res);
+            });
+        });
+        */
+
+        /*
+        mojio_client.get().vehicles().then(function(err,res){
+            v=res.Data[0]
+            v.Name="Test 1234"
+            mojio_client.vehicle(v).put().then(function(err,res) {
+                console.log("error");
+                console.log(err);
+
+                console.log("new put result");
+                console.log(res);
+            });
+        });
+        */
+
+        mojio_client.get().vehicles().then(function(err,res){
+            v=res.Data[0]
+
+            mojio_client.vehicle(v).permissions().get().then(function(err,res) {
+                console.log("error");
+                console.log(err);
+
+                console.log("permissions result");
+                console.log(res);
+            });
+        });
+
+
+    }
+    else
+    {
+        mojio_client.authorize();
+    }
+</script>
+
+</body>
+</html>
