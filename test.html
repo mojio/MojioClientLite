@@ -7,7 +7,6 @@
 </head>
 <body>
 
-<script src="promise.js"></script>
 <script src="MojioClientLite.js"></script>
 
 <script>
@@ -43,7 +42,7 @@
         */
 
         /*
-        mojio_client.get().apps().then(function(err,res){
+        mojio_client.get().apps().then(function(res,err){
             console.log("error");
             console.log(err);
 
@@ -101,6 +100,7 @@
         });
         */
 
+        /*
         mojio_client.get().vehicles().then(function(err,res){
             v=res.Data[0]
 
@@ -112,7 +112,12 @@
                 console.log(res);
             });
         });
+        */
 
+
+        console.log(mojio_client.query().top(10).top(13).prepare());
+
+        //a=mojio_client.query().top(10).top(13);
 
     }
     else

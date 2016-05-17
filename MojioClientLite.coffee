@@ -1,5 +1,74 @@
+$http = (url) ->
+  _encode = (data) ->
+    payload = ''
+    if typeof data == 'string'
+      payload = data
+    else
+      params = []
+      for k of data
+        if data.hasOwnProperty(k)
+          params.push e(k) + '=' + encodeURIComponent(data[k])
+      payload = params.join('&')
+    payload
+
+  core = ajax: (method, url, data, headers) ->
+
+    new Promise((resolve, reject) ->
+
+      client = new XMLHttpRequest
+
+      data = data or {}
+      headers = headers or {}
+      payload = _encode(data)
+
+      if method == 'GET' and payload
+        url += '?' + payload
+        payload = null
+
+      client.open method, url
+
+      content_type = 'application/x-www-form-urlencoded'
+      for h of headers
+        if headers.hasOwnProperty(h)
+          if h.toLowerCase() == 'content-type'
+            content_type = headers[h]
+          else
+            client.setRequestHeader h, headers[h]
+      client.setRequestHeader 'Content-type', content_type
+
+      if content_type == 'application/json'
+        payload = JSON.stringify(data)
+      else if content_type == 'multipart/form-data'
+        payload=data
+
+      client.send(payload)
+
+      client.onload = ->
+        if @status >= 200 and @status < 300
+          resolve @response
+        else
+          reject @statusText
+        return
+
+      client.onerror = ->
+        reject @statusText
+        return
+
+      return
+    )
+
+  {
+    'get': (args,headers) ->
+      core.ajax 'GET', url, args, headers
+    'post': (args) ->
+      core.ajax 'POST', url, args, headers
+    'put': (args) ->
+      core.ajax 'PUT', url, args, headers
+    'delete': (args) ->
+      core.ajax 'DELETE', url, args, headers
+  }
+
 class @MojioClientLite
-  _this = @
 
   @extend : (target) ->
     sources = [].slice.call(arguments, 1)
@@ -15,24 +84,27 @@ class @MojioClientLite
 
     defConfig={
       environment: ''
-      accountsURL: 'https://accounts.moj.io'
-      apiURL: 'https://api.moj.io'
-      pushURL: 'https://push.moj.io'
+      accountsURL: 'accounts.moj.io'
+      apiURL: 'api.moj.io'
+      pushURL: 'push.moj.io'
       redirect_uri:window.location.href.replace('http:','https:').split('#')[0],
       scope:'admin'
       acceptLanguage:'en'
+      tokenRequester:()->
+        document.location.hash.match(/access_token=([0-9a-f-]{36})/)[1]
     }
 
+    env='https://'
     @config = @constructor.extend({},defConfig,conf)
     if @config.environment!=''
-      @config.accountsURL=@config.environment + '-' + @config.accountsURL
-      @config.apiURL=@config.environment + '-' + @config.apiURL
-      @config.pushURL=@config.environment + '-' + @config.pushURL
+      env=env + @config.environment + '-'
+
+    @config.accountsURL=env + @config.accountsURL
+    @config.apiURL=env + @config.apiURL
+    @config.pushURL=env + @config.pushURL
 
   authorize:()=>
-    url=@config.accountsURL + '/OAuth2/authorize' + '?response_type=token&client_id=' + @config.application + '&redirect_uri=' +  @config.redirect_uri + '&scope=' + @config.scope
-
-    window.location.href=url
+    window.location.href @config.accountsURL + '/OAuth2/authorize' + '?response_type=token&client_id=' + @config.application + '&redirect_uri=' +  @config.redirect_uri + '&scope=' + @config.scope
 
   token:()=>
     param = window.location.toString().split('#')[1]
@@ -40,7 +112,7 @@ class @MojioClientLite
 
     if typeof(param) != 'undefined' && param.indexOf('access_token=')!=-1
       try
-        access_token = document.location.hash.match(/access_token=([0-9a-f-]{36})/)[1]
+        access_token = @config.tokenRequester()
 
         if access_token
           @config.access_token = access_token
@@ -59,385 +131,209 @@ class @MojioClientLite
 
 
   header:()=>
-    return {
+    {
       'Accept': 'application/json'
       'Authorization': 'Bearer ' + @config.access_token
       'Accept-Language': @config.acceptLanguage
       'Content-Type':'application/json'
     }
 
-  getMethods:()=>
-    g=@getPath
-    {
-      me:(data,header)=>
-        return g('/v2/me',data,header)
-      users:(data,header)=>
-        return g('/v2/users',data,header)
-      mojios:(data,header)=>
-        return g('/v2/mojios',data,header)
-      vehicles:(data,header)=>
-        return g('/v2/vehicles',data,header)
-      apps:(data,header)=>
-        return g('/v2/apps',data,header)
-      groups:(data,header)=>
-        return g('/v2/groups',data,header)
-      trips:(data,header)=>
-        return g('/v2/trips',data,header)
-      geofences:(data,header)=>
-        return g('/v2/geofences',data,header)
+  query:()=>
+    class qc
+      data:{}
+      top:($top)=>
+        @data.$top=$top
+        return @
+      skip:($skip)=>
+        @data.$skip=$skip
+        return @
+      filter:($filter)=>
+        @data.$filter=$filter
+        return @
+      select:($select)=>
+        @data.$select=$select
+        return @
+      orderby:($orderby)=>
+        @data.$orderby=$orderby
+        return @
 
-      user:(id)->
-        return g('/v2/users/' + id)
-      mojio:(id)=>
-        return g('/v2/mojios/'+ id)
-      vehicle:(id)=>
-        return g('/v2/vehicles/'+ id)
-      app:(id)=>
-        return g('/v2/apps/'+ id)
-      group:(id)=>
-        return g('/v2/groups/'+ id)
-      trip:(id)=>
-        return g('/v2/trips/'+ id)
-      geofence:(data,header)=>
-        return g('/v2/geofences/' + id)
+      prepare:()=>
+        @data
+    new qc()
 
-    }
+  getPath:(path,data,header)=>
+    data=data or {}
+    if data.prepare? then data=data.prepare()
 
-  getPath:(path,data)=>
-    url=@config.apiURL + path
-    if !data?
-      data={}
-    header=@header()
-
-    p = new promise.Promise();
-
-    promise.get(url,data,header).then((error, text, xhr)->
-      if (error)
-        p.done(xhr.status, null);
-
-      p.done(null, JSON.parse(text));
+    new Promise((resolve, reject) ->
+      $http(@config.apiURL + path).get(data,@constructor.extend({},@header(),header or {})).then(
+        (data)-> resolve JSON.parse(data)
+      ,
+        (data)-> reject data
+      )
     )
-    return p
 
   get:()=>
-
     if arguments.length==0
-      return @getMethods()
+      return {
+        me:(data,header)=>  @getPath('/v2/me',data,header)
+        users:(data,header)=>  @getPath('/v2/users',data,header)
+        mojios:(data,header)=>  @getPath('/v2/mojios',data,header)
+        vehicles:(data,header)=>  @getPath('/v2/vehicles',data,header)
+        apps:(data,header)=>  @getPath('/v2/apps',data,header)
+        groups:(data,header)=>  @getPath('/v2/groups',data,header)
+        trips:(data,header)=>  @getPath('/v2/trips',data,header)
+        geofences:(data,header)=>  @getPath('/v2/geofences',data,header)
 
+        user:(id)->  @getPath('/v2/users/' + id)
+        mojio:(id)=>  @getPath('/v2/mojios/'+ id)
+        vehicle:(id)=>  @getPath('/v2/vehicles/'+ id)
+        app:(id)=>  @getPath('/v2/apps/'+ id)
+        group:(id)=>  @getPath('/v2/groups/'+ id)
+        trip:(id)=>  @getPath('/v2/trips/'+ id)
+        geofence:(id)=>  @getPath('/v2/geofences/' + id)
+      }
     else if typeof(arguments[0])=="string"
-      path=arguments[0]
-
-      data={}
-      if arguments.length>=1
-        data=arguments[1]
-
-      @getPath(arguments[0],data)
+      @getPath(arguments[0],arguments[1] or {})
 
   put:(path,data)=>
-    url=@config.apiURL + path
-    if !data?
-      data={}
-    header=@header()
-
-    p = new promise.Promise();
-
-    promise.put(url,data,header).then((error, text, xhr)->
-      if (error)
-        p.done(xhr.status, null);
-
-      p.done(null, JSON.parse(text));
+    new Promise((resolve, reject) ->
+      $http(@config.apiURL + path).put(data or {},@constructor.extend({},@header(),header or {})).then(
+        (data)-> resolve JSON.parse(data)
+      ,
+        (data)-> reject data
+      )
     )
-    return p
 
   post:(path,data)=>
-    url=@config.apiURL + path
-    if !data?
-      data={}
-    header=@header()
-
-    p = new promise.Promise();
-
-    promise.put(url,data,header).then((error, text, xhr)->
-      if (error)
-        p.done(xhr.status, null);
-
-      p.done(null, JSON.parse(text));
+    new Promise((resolve, reject) ->
+      $http(@config.apiURL + path).post(data or {},@constructor.extend({},@header(),header or {})).then(
+        (data)-> resolve JSON.parse(data)
+      ,
+        (data)-> reject data
+      )
     )
-    return p
 
-  delete:(path)=>
-    url=@config.apiURL + path
-
-    header=@header()
-
-    p = new promise.Promise();
-
-    promise.delete(url).then((error, text, xhr)->
-      if (error)
-        p.done(xhr.status, null);
-
-      p.done(null, JSON.parse(text));
+  delete:(path,data)=>
+    new Promise((resolve, reject) ->
+      $http(@config.apiURL + path).delete(data or {},@constructor.extend({},@header(),header or {})).then(
+        (data)-> resolve JSON.parse(data)
+      ,
+        (data)-> reject data
+      )
     )
-    return p
 
   permissions:(path,oid)=>
     {
-      get:()=>
-        @getPath(path + '/' + oid + '/permissions')
-      delete:()=>
-        @delete(path + '/' + oid + '/permissions')
-      put:(data)=>
-        @put(path + '/' + oid + '/permissions',data)
-      post:(data)=>
-        @post(path + '/' + oid + '/permissions',data)
+      get:()=> @getPath(path + '/' + oid + '/permissions')
+      delete:()=> @delete(path + '/' + oid + '/permissions')
+      put:(data)=> @put(path + '/' + oid + '/permissions',data)
+      post:(data)=> @post(path + '/' + oid + '/permissions',data)
     }
 
   image:(path,oid)=>
     {
-      get:()=>
-        @getPath(path + '/' + oid + '/image')
-      delete:()=>
-        @delete(path + '/' + oid + '/image')
-      put:(data)=>
-        @put(path + '/' + oid + '/image',data,{'Content-Type':'multipart/form-data'})
-      post:(data)=>
-        @post(path + '/' + oid + '/image',data,{'Content-Type':'multipart/form-data'})
+      get:()=> @getPath(path + '/' + oid + '/image')
+      delete:()=> @delete(path + '/' + oid + '/image')
+      put:(data)=> @put(path + '/' + oid + '/image',data,{'Content-Type':'multipart/form-data'})
+      post:(data)=> @post(path + '/' + oid + '/image',data,{'Content-Type':'multipart/form-data'})
     }
 
   tags:(path,oid)=>
     {
-      delete:(tag)=>
-        @delete(path + '/' + oid + '/tags/' + tag)
-      post:(tag)=>
-        @post(path + '/' + oid + '/tags/' + tag)
+      delete:(tag)=> @delete(path + '/' + oid + '/tags/' + tag)
+      post:(tag)=> @post(path + '/' + oid + '/tags/' + tag)
 
     }
 
-  app:(appObj)=>
-    g=@getPath
-    p='/v2/apps'
-
+  app:(obj)=>
     {
-      put:()=>
-          @put(p + '/'  + appObj.Id,appObj)
-
-      post:()=>
-        @post(p,appObj)
-
-      delete:()=>
-        @delete(p + '/'  + appObj.Id)
-
+      put:()=> @put('/v2/apps/'  + obj.Id,obj)
+      post:()=> @post('/v2/apps',obj)
+      delete:()=> @delete('/v2/apps/'  + obj.Id)
       secret:()=>
-        {
-          get:()=>
-            g(p + '/' + appObj.Id + '/secret')
-          delete:()=>
-            @delete(p + '/' + appObj.Id + '/secret')
-        }
-
-      image:()=>
-        @image(p,appObj.Id)
-
-      permission:()=>
-        g(p + '/' + appObj.Id + '/permission')
-
-      permissions:()=>
-        @permissions(p,appObj.Id)
-
-      tags:()=>
-        @tags(p,appObj.Id)
+          get:()=> @getPath('/v2/apps/' + obj.Id + '/secret')
+          delete:()=> @delete('/v2/apps/' + obj.Id + '/secret')
+      image:()=> @image('/v2/apps',obj.Id)
+      permission:()=> @getPath('/v2/apps/' + obj.Id + '/permission')
+      permissions:()=> @permissions('/v2/apps',obj.Id)
+      tags:()=> @tags('/v2/apps',obj.Id)
     }
 
-  vehicle:(vehObj)=>
-    g=@getPath
-    p='/v2/vehicles'
+  vehicle:(obj)=>
     {
-      put:()=>
-        @put(p + '/'  + vehObj.Id,vehObj)
-
-      post:()=>
-        @post(p,vehObj)
-
-      delete:()=>
-        @delete(p + '/'  + vehObj.Id)
-
-      address:()=>
-        g(p + '/' + vehObj.Id + '/address')
-
-      trips:(data)=>
-        g(p + '/' + vehObj.Id + '/trips',data)
-
-      vin:()=>
-        g(p + '/' + vehObj.Id + '/vin')
-
-      serviceschedule:()=>
-        g(p + '/' + vehObj.Id + '/serviceschedule')
-
-      serviceschedulenext:()=>
-        g(p + '/' + vehObj.Id + '/serviceschedulenext')
-
+      put:()=> @put('/v2/vehicles/'  + obj.Id,obj)
+      post:()=> @post('/v2/vehicles',obj)
+      delete:()=> @delete('/v2/vehicles/'  + obj.Id)
+      address:()=> @getPath('/v2/vehicles/' + obj.Id + '/address')
+      trips:(data)=> @getPath('/v2/vehicles/' + obj.Id + '/trips',data)
+      vin:()=> @getPath('/v2/vehicles/' + obj.Id + '/vin')
+      serviceschedule:()=> @getPath('/v2/vehicles/' + obj.Id + '/serviceschedule')
+      serviceschedulenext:()=> @getPath('/v2/vehicles/' + obj.Id + '/serviceschedulenext')
       history:()=>
-        {
-          states:()=>
-            g(p + '/' + vehObj.Id + '/history/states')
-          locations:()=>
-            g(p + '/' + vehObj.Id + '/history/locations')
-        }
-
-      image:()=>
-        @image(p,vehObj.Id)
-
-      permission:()=>
-        g(p + '/' + vehObj.Id + '/permission')
-
-      permissions:()=>
-        @permissions(p,vehObj.Id)
-
-      tags:()=>
-        @tags(p,vehObj.Id)
-
+          states:()=> @getPath('/v2/vehicles/' + obj.Id + '/history/states')
+          locations:()=> @getPath('/v2/vehicles/' + obj.Id + '/history/locations')
+      image:()=> @image('/v2/vehicles',obj.Id)
+      permission:()=> @getPath('/v2/vehicles/' + obj.Id + '/permission')
+      permissions:()=> @permissions('/v2/vehicles',obj.Id)
+      tags:()=> @tags('/v2/vehicles',obj.Id)
     }
 
-  user:(userObj)=>
-    g=@getPath
-    p='/v2/users'
+  user:(obj)=>
     {
-      put:()=>
-        @put(p + '/'  + userObj.Id,userObj)
-
-      post:()=>
-        @post(p,userObj)
-
-      delete:()=>
-        @delete(p + '/'  + userObj.Id)
-
-      vehicles:()=>
-        g(p + '/' + userObj.Id + '/vehicles')
-
-      mojios:()=>
-        g(p + '/' + userObj.Id + '/mojios')
-
-      trips:()=>
-        g(p + '/' + userObj.Id + '/trips')
-
-      groups:()=>
-        g(p + '/' + userObj.Id + '/groups')
-
-      image:()=>
-        @image(p,userObj.Id)
-
-      permission:()=>
-        g(p + '/' + userObj.Id + '/permission')
-
-      permissions:()=>
-        @permissions(p,userObj.Id)
-
-      tags:()=>
-        @tags(p,userObj.Id)
+      put:()=> @put('/v2/users/'  + obj.Id,obj)
+      post:()=> @post('/v2/users',obj)
+      delete:()=> @delete('/v2/users/'  + obj.Id)
+      vehicles:()=> @getPath('/v2/users/' + obj.Id + '/vehicles')
+      mojios:()=> @getPath('/v2/users/' + obj.Id + '/mojios')
+      trips:()=> @getPath('/v2/users/' + obj.Id + '/trips')
+      groups:()=> @getPath('/v2/users/' + obj.Id + '/groups')
+      image:()=> @image('/v2/users',obj.Id)
+      permission:()=> @getPath('/v2/users/' + obj.Id + '/permission')
+      permissions:()=> @permissions('/v2/users',obj.Id)
+      tags:()=> @tags(p,obj.Id)
     }
 
-  geofence:(gfObj)=>
-    g=@getPath
-    p='/v2/geofences'
+  geofence:(obj)=>
     {
-      put:()=>
-        @put(p + '/'  + gfObj.Id,gfObj)
-
-      post:()=>
-        @post(p,gfObj)
-
-      delete:()=>
-        @delete(p + '/'  + gfObj.Id)
-
+      put:()=> @put('/v2/geofences/'  + obj.Id,obj)
+      post:()=> @post('/v2/geofences',obj)
+      delete:()=> @delete('/v2/geofences/' + obj.Id)
     }
 
-  group:(grpObj)=>
-    g=@getPath
-    p='/v2/groups'
-
+  group:(obj)=>
     {
-      put:()=>
-        @put(p + '/'  + grpObj.Id,grpObj)
-
-      post:()=>
-        @post(p,grpObj)
-
-      delete:()=>
-        @delete(p + '/'  + grpObj.Id)
-
+      put:()=> @put('/v2/groups/'  + objId,obj)
+      post:()=> @post('/v2/groups',obj)
+      delete:()=> @delete('/v2/groups/'  + obj.Id)
       users:()=>
-        {
-          get:()=>
-            g(p + '/' + grpObj.Id + '/users')
-          delete:()=>
-            @delete(p + '/' + grpObj.Id + '/users')
-          put:(data)=>
-            @put(p + '/' + grpObj.Id + '/users',data)
-          post:(data)=>
-            @post(p + '/' + grpObj.Id + '/users',data)
-        }
-
-      permission:()=>
-        g(p + '/' + grpObj.Id + '/permission')
-
-      permissions:()=>
-        @permissions(p,grpObj.Id)
-
-      tags:()=>
-        @tags(p,grpObj.Id)
+          get:()=> @getPath('/v2/groups/' + obj.Id + '/users')
+          delete:()=> @delete('/v2/groups/' + obj.Id + '/users')
+          put:(data)=> @put('/v2/groups/' + obj.Id + '/users',data)
+          post:(data)=> @post('/v2/groups/' + obj.Id + '/users',data)
+      permission:()=> @getPath('/v2/groups/' + obj.Id + '/permission')
+      permissions:()=> @permissions('/v2/groups',obj.Id)
+      tags:()=> @tags(p,obj.Id)
     }
 
-  trip:(tripObj)=>
-    g=@getPath
-    p='/v2/trips'
-
+  trip:(obj)=>
     {
-      put:()=>
-        @put(p + '/'  + tripObj.Id,tripObj)
-
-      delete:()=>
-        @delete(p + '/'  + tripObj.Id)
-
+      put:()=> @put('/v2/trips/'  + obj.Id,obj)
+      delete:()=> @delete('/v2/trips/'  + obj.Id)
       history:()=>
-        {
-          states:()=>
-            g(p + '/' + tripObj.Id + '/history/states')
-          locations:()=>
-            g(p + '/' + tripObj.Id + '/history/locations')
-        }
-
-      permission:()=>
-        g(p + '/' + tripObj.Id + '/permission')
-
-      permissions:()=>
-        @permissions(p,tripObj.Id)
-
-      tags:()=>
-        @tags(p,tripObj.Id)
-
+          states:()=> @getPath('/v2/trips/' + obj.Id + '/history/states')
+          locations:()=> @getPath('/v2/trips/' + obj.Id + '/history/locations')
+      permission:()=> @getPath('/v2/trips/' + obj.Id + '/permission')
+      permissions:()=> @permissions('/v2/trips',obj.Id)
+      tags:()=> @tags('/v2/trips',obj.Id)
     }
 
-  mojio:(mojioObj)=>
-    g=@getPath
-    p='/v2/mojios'
-
+  mojio:(obj)=>
     {
-      put:()=>
-        @put(p + '/'  + mojioObj.Id,grpObj)
-
-      post:()=>
-        @post(p,mojioObj)
-
-      delete:()=>
-        @delete(p + '/'  + mojioObj.Id)
-
-      permission:()=>
-        g(p + '/' + mojioObj.Id + '/permission')
-
-      permissions:()=>
-        @permissions(p,mojioObj.Id)
-
-      tags:()=>
-        @tags(p,mojioObj.Id)
-
+      put:()=> @put('/v2/mojios' + '/'  + obj.Id,obj)
+      post:()=> @post('/v2/mojios',obj)
+      delete:()=> @delete('/v2/mojios' + '/'  + obj.Id)
+      permission:()=> @getPath('/v2/mojios' + '/' + obj.Id + '/permission')
+      permissions:()=> @permissions('/v2/mojios',obj.Id)
+      tags:()=> @tags('/v2/mojios',obj.Id)
     }

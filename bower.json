@@ -19,6 +19,5 @@
     "**/.*"
   ],
   "dependencies": {
-    "promisejs": "https://github.com/stackp/promisejs.git"
   }
 }
