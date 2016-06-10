@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="src/MojioClientLite.js"></script>
+
+</head>
+<body>
+
+    <script>
+        var config = {
+            application: 'b66b06d1-e3f1-4ff0-b329-a89fd33e1915'
+        };
+
+        var mojio_client1 = new MojioClientLite(config);
+        var mojio_client2 = new MojioClientLite(config);
+
+        mojio_client1.authorize();
+        mojio_client1.authorize();
+        mojio_client1.authorize();
+
+        mojio_client2.authorize();
+
+
+    </script>
+
+</body>
+</html>

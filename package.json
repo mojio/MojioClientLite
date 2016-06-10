@@ -1,0 +1,29 @@
+{
+  "name": "mojio-client-lite",
+  "version": "1.0.0",
+  "description": "Mojio javascript REST client.",
+  "main": "src/MojioClientLite.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-node ./test",
+    "build": "uglifyjs MojioClientLite.js -c \"evaluate=false\" -m --source-map MojioClientLite-min.map -o MojioClientLite-min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ParidelPooya/MojioClientLite.git"
+  },
+  "keywords": [
+    "Mojio",
+    "REST",
+    "SDK",
+    "JavaScript"
+  ],
+  "author": "Pooya Paridel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ParidelPooya/MojioClientLite/issues"
+  },
+  "homepage": "https://github.com/ParidelPooya/MojioClientLite#readme",
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
+  }
+}
