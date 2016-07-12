@@ -2,7 +2,7 @@
 
 In order to make use of the code samples below you will first need to have a new app project set up. To set up a new app project go to the Create New App page. Once you have created a new application, you will need the AppID in order to initiate any API calls through our SDK.
 
-### INITIALIZING THE SDK ###
+### INITIALIZING THE SDK (Client Side)###
 
 First you will want to download SDK libraries. Once you have downloaded and included the SDK, connecting to our API is as simple as:
 ```
@@ -27,7 +27,36 @@ First you will want to download SDK libraries. Once you have downloaded and incl
       acceptLanguage:'en'
     }
 ```
-### AUTHENTICATING A MOJIO USER ###
+
+### INITIALIZING THE SDK (Back End)###
+
+First you will want to download SDK libraries. Once you have downloaded and included the SDK, connecting to our API is as simple as:
+```
+var MojioClientLite= require("MojioClientLite");
+
+var config = {
+    application: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+    secret:'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+};
+
+var mojio_client = new MojioClientLite(config);
+```
+
+"application" and "secret" are the only mandatory option in config. But if you want more control you can modify the other options:
+```
+    var config = {
+      application: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' // your application ID
+      secret:  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' // your application secret
+      environment: '' // staging, develope, ...
+      accountsURL: 'accounts.moj.io'
+      apiURL: 'api.moj.io'
+      pushURL: 'push.moj.io'
+      scope:'full'
+      acceptLanguage:'en'
+    }
+```
+
+### AUTHENTICATING A MOJIO USER (Client Side) ###
 Many of our API calls require an authorized user to be associated with the SDK requests. In order to authenticate a user, you must redirect to the Mojio authentication server.
 
 ```
@@ -42,6 +71,30 @@ Many of our API calls require an authorized user to be associated with the SDK r
         mojio_client.authorize();
     }
 ```
+
+### AUTHENTICATING A MOJIO USER (Back End) ###
+Many of our API calls require an authorized user to be associated with the SDK requests. In order to authenticate a user.
+
+```
+    mojio_client.authorize('username or email','password').then(function(res,err){
+
+        if(typeof(err)!="undefined")
+        {
+            console.log("login error");
+            return;
+        }
+
+        // login successful
+        // write your logic here
+    })
+```
+
+### REFRESH TOKEN ###
+Token will expire after 12 hours. To receive new token:
+```
+        return mojio_client.refreshToken();
+```
+
 ### FETCHING DATA ###
 get() method provide many sub methods to receive list of objects. Here is the list of calls for receiving data:
 ```
@@ -69,13 +122,13 @@ mojio_client.get().geofence(id) //Fetching specefic geofence data
 Examples:
 ```
 // Fetching list of Mojio devices
-mojio_client.get().mojios().then(function(err,res){
+mojio_client.get().mojios().then(function(res,err){
         // if err is null then data will be inside res
 }
 
 // Fetching one specefic device data
 mojioId='xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' // Id of device you want to fetch
-mojio_client.get().mojio(mojioId).then(function(err,res){
+mojio_client.get().mojio(mojioId).then(function(res,err){
         // if err is null then data will be inside res
 }
 ```
@@ -97,7 +150,7 @@ custom=mojio_client.query()
     .select("list of fields")
     .orderby("something");
 
-mojio_client.get().vehicles(custom).then(function(err,res){
+mojio_client.get().vehicles(custom).then(function(res,err){
         // if err is null then data will be inside res
 }
 ```
@@ -107,7 +160,7 @@ In addition to all method for fetching data you can use getPath method to call a
 ```
 // getPath(url,data)
 // Fetching list of Mojio devices
-mojio_client.getPath('/v2/mojios').then(function(err,res){
+mojio_client.getPath('/v2/mojios').then(function(res,err){
         // if err is null then data will be inside res
 }
 ```
@@ -116,10 +169,10 @@ mojio_client.getPath('/v2/mojios').then(function(err,res){
 If you want to update and save an entity, you need to first load the entity from the API, make your changes, and then save it back. Typically only the owner of an entity will be authorized to save changes and not all properties of an entity will be editable (for example, for an App, only the Name and Description properties can be changed).
 ```
     // This example reterive list of vehicles and then change the title of the first vehicle and save it.
-    mojio_client.get().vehicles().then(function(err,res){
+    mojio_client.get().vehicles().then(function(res,err){
         v=res.Data[0]
         v.Name="new vehicle name"
-        mojio_client.vehicle(v).put().then(function(err,res) {
+        mojio_client.vehicle(v).put().then(function(res,err) {
             console.log("error");
             console.log(err);
 
@@ -133,9 +186,9 @@ If you want to delete an entity from the Mojio API, a delete call must be made. 
 
 ```
     // This example reterive list of trips and then selete the first trip.
-    mojio_client.get().trips().then(function(err,res){
+    mojio_client.get().trips().then(function(res,err){
 
-        mojio_client.vehicle(res.Data[0]).delete().then(function(err,res) {
+        mojio_client.vehicle(res.Data[0]).delete().then(function(res,err) {
             console.log("error");
             console.log(err);
 
@@ -148,8 +201,8 @@ If you want to delete an entity from the Mojio API, a delete call must be made. 
 ### GETTING A LIST OF CHILD ENTITIES ###
 For example, if you want to fetch the Trips associated with a Vehicle:
 ```
-    mojio_client.get().vehicles().then(function(err,res){
-        mojio_client.vehicle(res.Data[0]).trips().then(function(err,res) {
+    mojio_client.get().vehicles().then(function(res,err){
+        mojio_client.vehicle(res.Data[0]).trips().then(function(res,err) {
             console.log("error");
             console.log(err);
 

@@ -12,4 +12,4 @@ describe('mymodule', function(){
         expect( mymodule() ).toBe( 'doing something' )
     })
 
-})sudo
+})

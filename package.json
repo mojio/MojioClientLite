@@ -25,5 +25,8 @@
   "homepage": "https://github.com/ParidelPooya/MojioClientLite#readme",
   "devDependencies": {
     "jasmine-node": "^1.14.5"
+  },
+  "dependencies": {
+    "xmlhttprequest": "^1.8.0"
   }
 }
