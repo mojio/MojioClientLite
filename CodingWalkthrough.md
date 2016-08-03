@@ -149,7 +149,7 @@ When you are making call, you can specify these conditions:
 - filter: Specifies an expression or function that must evaluate to true for a record to be returned in the collection.
 - Select: Specifies a subset of properties to return.
 - Orderby: Determines what values are used to order a collection of records.
--
+
 There is a helper method for cutomization:
 ```
 // Fetching list of Mojio devices
@@ -174,7 +174,12 @@ mojio_client.getPath('/v2/mojios').then(function(res,err){
         // if err is null then data will be inside res
 }
 ```
-
+Also it's handy for calling V1 api:
+```
+mojio_client.getPath('/v1/users/me').then(function(res,err){
+        // if err is null then data will be inside res
+}
+```
 ### SAVING AN EXISTING ENTITY ###
 If you want to update and save an entity, you need to first load the entity from the API, make your changes, and then save it back. Typically only the owner of an entity will be authorized to save changes and not all properties of an entity will be editable (for example, for an App, only the Name and Description properties can be changed).
 ```
