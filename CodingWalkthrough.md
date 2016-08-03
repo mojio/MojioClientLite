@@ -2,9 +2,19 @@
 
 In order to make use of the code samples below you will first need to have a new app project set up. To set up a new app project go to the Create New App page. Once you have created a new application, you will need the AppID in order to initiate any API calls through our SDK.
 
-### INITIALIZING THE SDK (Client Side)###
+### INSTALLING THE SDK ###
+First you will want to download SDK libraries. You can do it manually or by NPM or Bower. There is no package name for NPM or Bower yet but you can install it by GIT endpoint:
+```
+npm install https://github.com/mojio/MojioClientLite --save
 
-First you will want to download SDK libraries. Once you have downloaded and included the SDK, connecting to our API is as simple as:
+or
+
+bower install https://github.com/mojio/MojioClientLite
+```
+
+### INITIALIZING THE SDK (Client Side) ###
+
+Once you have included the SDK, connecting to our API is as simple as:
 ```
 <script src="MojioClientLite.js"></script>
 <script>

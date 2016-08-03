@@ -5,7 +5,7 @@
   "main": "src/MojioClientLite.js",
   "scripts": {
     "test": "./node_modules/.bin/jasmine-node ./test",
-    "build": "uglifyjs MojioClientLite.js -c \"evaluate=false\" -m --source-map MojioClientLite-min.map -o MojioClientLite-min.js"
+    "build": "uglifyjs src/MojioClientLite.js -c \"evaluate=false\" -m --source-map src/MojioClientLite-min.map -o src/MojioClientLite-min.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/ParidelPooya/MojioClientLite#readme",
   "devDependencies": {
-    "jasmine-node": "^1.14.5"
   },
   "dependencies": {
     "xmlhttprequest": "^1.8.0"
