@@ -231,10 +231,18 @@ For example, if you want to fetch the Trips associated with a Vehicle:
 Mojio allows developers to receive data on Entity changes (Mojios,Vehicle) so instead of pulling data server can push changes to client.
 ```
 websocket=mojio_client.push(url)
-websocket=mojio_client.push().mojios() //observing all mojio devices (you can call mojio_client.push('/v2/mojios') instead)
-websocket=mojio_client.push().mojio(id) //observing one mojio device by passing device id (you can call mojio_client.push('/v2/mojios/' + id) instead)
-websocket=mojio_client.push().mojios() //observing all vehicles (you can call mojio_client.push('/v2/vehicles') instead)
-websocket=mojio_client.push().mojios() //observing one vehicle by passing vehicle id (you can call mojio_client.push('/v2/vehicles/' + id) instead)
+
+websocket=mojio_client.push().mojios()
+//observing all mojio devices (you can call mojio_client.push('/v2/mojios') instead)
+
+websocket=mojio_client.push().mojio(id)
+//observing one mojio device by passing device id (you can call mojio_client.push('/v2/mojios/' + id) instead)
+
+websocket=mojio_client.push().mojios()
+//observing all vehicles (you can call mojio_client.push('/v2/vehicles') instead)
+
+websocket=mojio_client.push().mojios()
+//observing one vehicle by passing vehicle id (you can call mojio_client.push('/v2/vehicles/' + id) instead)
 
 
 websocket.onopen = function(){
@@ -259,4 +267,24 @@ websocket.onmessage = function(e){
 websocket.close()
 
 
+```
+
+### CREATING HTTPPOST OBSERVER ###
+Mojio allows developer receive data on Entity changes by HTTP POST. So in addition to listening to HTTP post (for example by express) you need to define observer:
+```
+data={
+    "Key" : "square",
+    "Conditions": "Location.Lat gt 91.987 and Location.Lat lt 92.83738 and Location.Lng lt -120.28378 and Location.Lng gt -121.23873",
+    "Timing": "Leading",
+    "Transports" : [
+        {
+            "Type" : "HttpPost",
+            "Address" : "https://b940657a.ngrok.io/observer_callback" //change it to your listening url
+        }
+    ]
+}
+
+mojio_client.post("https://push.moj.io/v2/vehicle",data).then(function(res,err){
+	// if err is null then observer created successfully.
+}
 ```
