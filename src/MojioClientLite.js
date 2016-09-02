@@ -50,7 +50,7 @@
                             }
                         }
                     }
-                    client.setRequestHeader('content-type', content_type);
+                    client.setRequestHeader('Content-Type', content_type);
                     if (content_type === 'application/json') {
                         payload = JSON.stringify(data);
                     } else if (content_type === 'multipart/form-data') {
