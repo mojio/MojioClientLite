@@ -356,12 +356,14 @@
         };
 
         MojioClientLite.prototype.push = function() {
+            var _this=this;
+
             if (arguments.length === 0) {
                 return {
-                    mojios: function() {return push('/v2/mojios')},
-                    vehicles: function() {return push('/v2/vehicles')},
-                    mojio: function(obj) {return push('/v2/mojios/' + obj.Id)},
-                    vehicle: function(obj) {return push('/v2/vehicles/' + obj.Id)}
+                    mojios: function() {return _this.push('/v2/mojios')},
+                    vehicles: function() {return _this.push('/v2/vehicles')},
+                    mojio: function(obj) {return _this.push('/v2/mojios/' + obj.Id)},
+                    vehicle: function(obj) {return _this.push('/v2/vehicles/' + obj.Id)}
                 };
             } else {
                 var ws;
