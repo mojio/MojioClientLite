@@ -23,9 +23,9 @@
     "url": "https://github.com/ParidelPooya/MojioClientLite/issues"
   },
   "homepage": "https://github.com/ParidelPooya/MojioClientLite#readme",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
+    "ws": "^1.1.1",
     "xmlhttprequest": "^1.8.0"
   }
 }

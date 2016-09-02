@@ -50,7 +50,7 @@
                             }
                         }
                     }
-                    client.setRequestHeader('Content-type', content_type);
+                    client.setRequestHeader('content-type', content_type);
                     if (content_type === 'application/json') {
                         payload = JSON.stringify(data);
                     } else if (content_type === 'multipart/form-data') {
@@ -364,6 +364,14 @@
                     vehicle: function(obj) {return push('/v2/vehicles/' + obj.Id)}
                 };
             } else {
+                var wb;
+                if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+                    ws = require("xmlhttprequest").XMLHttpRequest;
+                }
+                else {
+                    xhr=XMLHttpRequest
+                }
+
                 return new WebSocket(this.config.wsURL + arguments[0], this.config.access_token);
             }
         };
