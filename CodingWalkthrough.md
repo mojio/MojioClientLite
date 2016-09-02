@@ -238,10 +238,10 @@ websocket=mojio_client.push().mojios()
 websocket=mojio_client.push().mojio(id)
 //observing one mojio device by passing device id (you can call mojio_client.push('/v2/mojios/' + id) instead)
 
-websocket=mojio_client.push().mojios()
+websocket=mojio_client.push().vehicles()
 //observing all vehicles (you can call mojio_client.push('/v2/vehicles') instead)
 
-websocket=mojio_client.push().mojios()
+websocket=mojio_client.push().vehicles(id)
 //observing one vehicle by passing vehicle id (you can call mojio_client.push('/v2/vehicles/' + id) instead)
 
 
