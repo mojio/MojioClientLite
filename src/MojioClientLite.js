@@ -364,15 +364,16 @@
                     vehicle: function(obj) {return push('/v2/vehicles/' + obj.Id)}
                 };
             } else {
-                var wb;
+                var ws;
                 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-                    ws = require("xmlhttprequest").XMLHttpRequest;
+                    var WebSocket = require('ws');
+                    ws = new WebSocket(this.config.wsURL + arguments[0], this.config.access_token);
                 }
                 else {
-                    xhr=XMLHttpRequest
+                    ws=new WebSocket(this.config.wsURL + arguments[0], this.config.access_token);
                 }
 
-                return new WebSocket(this.config.wsURL + arguments[0], this.config.access_token);
+                return ws;
             }
         };
 
