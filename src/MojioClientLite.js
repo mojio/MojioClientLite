@@ -61,11 +61,17 @@
                         if (this.status >= 200 && this.status < 300) {
                             resolve(this.responseText);
                         } else {
-                            reject(this.statusText);
+                            err=this.statusText;
+                            if(err==null || err.length==0)
+                                err=this.responseText
+                            reject(err);
                         }
                     };
                     client.onerror = function() {
-                        reject(this.statusText);
+                        err=this.statusText;
+                        if(err==null || err.length==0)
+                            err=this.responseText
+                        reject(err);
                     };
                 });
             }
