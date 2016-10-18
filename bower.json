@@ -1,11 +1,11 @@
 {
-  "name": "MojioClientLite",
+  "name": "mojio-client-lite",
   "version": "0.0.1",
   "authors": [
     "Pooya Paridel"
   ],
   "description": "Mojio Client SDK (Lite version)",
-  "main": "MojioClientLite.js",
+  "main": "src/MojioClientLite.js",
   "keywords": [
     "Mojio",
     "SDK",

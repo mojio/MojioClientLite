@@ -9,7 +9,7 @@ npm install https://github.com/mojio/MojioClientLite --save
 
 or
 
-bower install https://github.com/mojio/MojioClientLite
+bower install https://github.com/mojio/MojioClientLite.git --save
 ```
 
 ### INITIALIZING THE SDK (Client Side) ###
