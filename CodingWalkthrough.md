@@ -102,7 +102,19 @@ Many of our API calls require an authorized user to be associated with the SDK r
 ### REFRESH TOKEN ###
 Token will expire after 12 hours. To receive new token:
 ```
-        return mojio_client.refreshToken();
+        mojio_client.refreshToken();
+```
+
+### STORING TOKEN ###
+Token will store in memory by default, but it's easy to configure to store in other storage (like sessionStorage or localStorage). To do so you need to change it in config:
+```
+var config = {
+    ...
+    dataStorage:sessionStorage, // sessionStorage or localStorage
+    ...
+};
+
+var mojio_client = new MojioClientLite(config);
 ```
 
 ### FETCHING DATA ###

@@ -156,6 +156,7 @@
                 redirect_uri: (typeof window!=="undefined")?window.location.href.replace('http:', 'https:').split('#')[0]:'',
                 scope: 'admin',
                 acceptLanguage: 'en',
+                dataStorage:{},
                 tokenRequester: function() {
                     return document.location.hash.match(/access_token=([0-9a-f-]{36})/)[1];
                 },
@@ -244,15 +245,15 @@
                     var access_token = this.config.tokenRequester();
                     if (access_token) {
                         this.config.access_token = access_token;
-                        sessionStorage.setItem(ACCESSTOKENSTORAGE, this.config.access_token);
+                        this.config.dataStorage[ACCESSTOKENSTORAGE]=this.config.access_token;
                         found = true;
                     }
                 } catch (error) {
                     found = false;
                 }
             } else {
-                var temp = sessionStorage[ACCESSTOKENSTORAGE];
-                if (temp != null && temp !== null && temp.length !== 0) {
+                var temp = this.config.dataStorage[ACCESSTOKENSTORAGE];
+                if (typeof(temp)!="undefined" && temp != null && temp !== null && temp.length !== 0) {
                     this.config.access_token = temp;
                     found = true;
                 }
