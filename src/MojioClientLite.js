@@ -126,6 +126,7 @@
         function MojioClientLite(conf) {
 
             this.authorize = bind(this.authorize, this);
+            this.logout = bind(this.logout, this);
             this.token = bind(this.token, this);
             this.header = bind(this.header, this);
             this.query = bind(this.query, this);
@@ -210,6 +211,13 @@
                     '&scope=' + this.config.scope;
             }
             return
+        };
+
+        MojioClientLite.prototype.logout = function() {
+            window.location.href=this.config.accountsURL + '/OAuth2/authorize?' +
+                'response_type=token&prompt=login&client_id=' + this.config.application +
+                '&redirect_uri=' + this.config.redirect_uri +
+                '&scope=' + this.config.scope;
         };
 
         MojioClientLite.prototype.refreshToken = function(user,password) {

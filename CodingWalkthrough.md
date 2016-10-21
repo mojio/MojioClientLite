@@ -82,6 +82,13 @@ Many of our API calls require an authorized user to be associated with the SDK r
     }
 ```
 
+### LOGOUT (Client Side) ###
+It's similar to authorize(), the only difference is it force the current user logout and then it will show login form again.
+
+```
+        mojio_client.logout();
+```
+
 ### AUTHENTICATING A MOJIO USER (Back End) ###
 Many of our API calls require an authorized user to be associated with the SDK requests. In order to authenticate a user.
 
