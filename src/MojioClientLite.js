@@ -178,7 +178,7 @@
         }
 
         MojioClientLite.prototype.authorize = function(user,password) {
-            if(user)
+            if(typeof(user)!="undefined")
             {
                 var _this=this;
 
@@ -205,6 +205,11 @@
 
             }
             else {
+                if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+                    console.log("For anything other that browser please use authorize(user,password)");
+                    return;
+                }
+
                 window.location.href=this.config.accountsURL + '/OAuth2/authorize?' +
                     'response_type=token&client_id=' + this.config.application +
                     '&redirect_uri=' + this.config.redirect_uri +
@@ -214,6 +219,11 @@
         };
 
         MojioClientLite.prototype.logout = function() {
+            if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+                console.log("This method is only for client side (in browser).");
+                return;
+            }
+
             window.location.href=this.config.accountsURL + '/OAuth2/authorize?' +
                 'response_type=token&prompt=login&client_id=' + this.config.application +
                 '&redirect_uri=' + this.config.redirect_uri +
