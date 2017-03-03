@@ -1,5 +1,5 @@
 /**
- * Created by pooyaparidel on 2016-06-10.
+ * Created by Pooya Paridel on 2016-06-10.
  */
 
 (function() {
@@ -102,21 +102,25 @@
             }
         });
         return target;
-    }
+    };
 
-    var ACCESSTOKENSTORAGE='ACCESSTOKEN'
+    var ACCESSTOKENSTORAGE='ACCESSTOKEN';
 
     var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
     var pathConcat= function (basePath,actualPath){
 
-        if(actualPath.indexOf('http://')==0 || actualPath.indexOf('https://')==0)
-            return actualPath
+        if(actualPath.indexOf('http://')===0 || actualPath.indexOf('https://')===0)
+        {
+            return actualPath;
+        }
         else
         {
-            sep=''
-            if( basePath.charAt(basePath.length - 1)!="/"  && actualPath.charAt(0)!="/")
-                sep='/'
+            var sep='';
+            if( basePath.charAt(basePath.length - 1)!=="/"  && actualPath.charAt(0)!=="/")
+            {
+                sep='/';
+            }
 
             return basePath + sep + actualPath;
         }
@@ -230,7 +234,7 @@
                 '&scope=' + this.config.scope;
         };
 
-        MojioClientLite.prototype.refreshToken = function(user,password) {
+        MojioClientLite.prototype.refreshToken = function() {
             var _this=this;
 
             header={'Content-Type': 'x-www-form-urlencoded'};
@@ -397,7 +401,7 @@
                     ws = new WebSocket(this.config.wsURL + arguments[0], this.config.access_token);
                 }
                 else {
-                    ws=new WebSocket(this.config.wsURL + arguments[0], this.config.access_token);
+                    ws = new WebSocket(this.config.wsURL + arguments[0], this.config.access_token);
                 }
 
                 return ws;
@@ -491,7 +495,7 @@
             };
         };
 
-        vehicle = function(obj) {
+        MojioClientLite.prototype.vehicle = function(obj) {
             var _this=this;
 
             return {
@@ -516,7 +520,7 @@
             };
         };
 
-        user = function(obj) {
+        MojioClientLite.prototype.user = function(obj) {
             var _this=this;
 
             return {
@@ -534,7 +538,7 @@
             };
         };
 
-        geofence = function(obj) {
+        MojioClientLite.prototype.geofence = function(obj) {
             var _this=this;
 
             return {
@@ -544,7 +548,7 @@
             };
         };
 
-        group = function(obj) {
+        MojioClientLite.prototype.group = function(obj) {
             var _this=this;
 
             return {
@@ -565,7 +569,7 @@
             };
         };
 
-        trip = function(obj) {
+        MojioClientLite.prototype.trip = function(obj) {
             var _this=this;
 
             return {
@@ -583,7 +587,7 @@
             };
         };
 
-        mojio = function(obj) {
+        MojioClientLite.prototype.mojio = function(obj) {
             var _this=this;
 
             return {

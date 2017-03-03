@@ -23,7 +23,11 @@
     "url": "https://github.com/ParidelPooya/MojioClientLite/issues"
   },
   "homepage": "https://github.com/ParidelPooya/MojioClientLite#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "nock": "^9.0.9"
+  },
   "dependencies": {
     "ws": "^1.1.1",
     "xmlhttprequest": "^1.8.0"
