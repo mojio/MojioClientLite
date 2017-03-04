@@ -159,7 +159,7 @@
                 pushURL: 'push.moj.io',
                 wsURL: 'api.moj.io',
                 redirect_uri: (typeof window!=="undefined")?window.location.href.replace('http:', 'https:').split('#')[0]:'',
-                scope: 'admin',
+                scope: 'full',
                 acceptLanguage: 'en',
                 dataStorage:{},
                 tokenRequester: function() {

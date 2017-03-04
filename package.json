@@ -4,7 +4,7 @@
   "description": "Mojio javascript REST client.",
   "main": "src/MojioClientLite.js",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node ./test",
+    "test": "./node_modules/mocha/bin/mocha",
     "build": "uglifyjs src/MojioClientLite.js -c \"evaluate=false\" -m --source-map src/MojioClientLite-min.map -o src/MojioClientLite-min.js"
   },
   "repository": {

@@ -1,0 +1,1928 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/MojioClientLite.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">src/</a> MojioClientLite.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">36.26% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>132/364</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">31.13% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>33/106</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">12.42% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>20/161</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">35.91% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>130/362</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">53×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">88×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * Created by Pooya Paridel on 2016-06-10.
+ */
+&nbsp;
+(function() {
+&nbsp;
+    var $http = function(url) {
+        var _encode = function(data) {
+            var payload = '';
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof data === 'string') {
+<span class="cstat-no" title="statement not covered" >                payload = data;</span>
+            } else {
+                var params = [];
+                for (var k in data) {
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (data.hasOwnProperty(k)) {
+                        params.push(encodeURIComponent(k) + '=' + encodeURIComponent(data[k]));
+                    }
+                }
+                payload = params.join('&amp;');
+            }
+            return payload;
+        };
+        var core = {
+            ajax: function(method, url, data, headers) {
+                return new Promise(function(resolve, reject) {
+                    var xhr;
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof module !== 'undefined' &amp;&amp; typeof module.exports !== 'undefined') {
+                        xhr = require("xmlhttprequest").XMLHttpRequest;
+                    }
+                    else {
+<span class="cstat-no" title="statement not covered" >                        xhr=XMLHttpRequest</span>
+                    }
+&nbsp;
+                    var client = new xhr;
+                    data = data || <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
+                    headers = headers || <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
+                    var payload = _encode(data);
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if (method === 'GET' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >payload)</span> {
+<span class="cstat-no" title="statement not covered" >                        url += '?' + payload;</span>
+<span class="cstat-no" title="statement not covered" >                        payload = null;</span>
+                    }
+                    client.open(method, url);
+                    var content_type = 'application/x-www-form-urlencoded';
+                    for (var h in headers) {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (headers.hasOwnProperty(h)) {
+                            if (h.toLowerCase() === 'content-type') {
+                                content_type = headers[h];
+                            } else {
+                                client.setRequestHeader(h, headers[h]);
+                            }
+                        }
+                    }
+                    client.setRequestHeader('Content-Type', content_type);
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if (content_type === 'application/json') {
+<span class="cstat-no" title="statement not covered" >                        payload = JSON.stringify(data);</span>
+                    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (content_type === 'multipart/form-data') {
+<span class="cstat-no" title="statement not covered" >                        payload = data;</span>
+                    }
+                    client.send(payload);
+                    client.onload = function() {
+                        <span class="missing-if-branch" title="if path not taken" >I</span>if (this.status &gt;= 200 &amp;&amp; this.status &lt; 300) {
+<span class="cstat-no" title="statement not covered" >                            resolve(this.responseText);</span>
+                        } else {
+                            err=this.statusText;
+                            <span class="missing-if-branch" title="else path not taken" >E</span>if(err==null || <span class="branch-1 cbranch-no" title="branch not covered" >err.length==0)</span>
+                                err=this.responseText
+                            reject(err);
+                        }
+                    };
+                    client.onerror = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                        err=this.statusText;</span>
+<span class="cstat-no" title="statement not covered" >                        if(err==null || err.length==0)</span>
+<span class="cstat-no" title="statement not covered" >                            err=this.responseText</span>
+<span class="cstat-no" title="statement not covered" >                        reject(err);</span>
+                    };
+                });
+            }
+        };
+        return {
+            'get': <span class="fstat-no" title="function not covered" >function(args, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                return core.ajax('GET', url, args, headers);</span>
+            },
+            'post': function(args, headers) {
+                return core.ajax('POST', url, args, headers);
+            },
+            'put': <span class="fstat-no" title="function not covered" >function(args, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                return core.ajax('PUT', url, args, headers);</span>
+            },
+            'delete': <span class="fstat-no" title="function not covered" >function(args, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                return core.ajax('DELETE', url, args, headers);</span>
+            }
+        };
+    };
+&nbsp;
+    var extend = function(target) {
+        var sources;
+        sources = [].slice.call(arguments, 1);
+        sources.forEach(function(source) {
+            var prop;
+            for (prop in source) {
+                target[prop] = source[prop];
+            }
+        });
+        return target;
+    };
+&nbsp;
+    var ACCESSTOKENSTORAGE='ACCESSTOKEN';
+&nbsp;
+    var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+&nbsp;
+    var pathConcat= function (basePath,actualPath){
+&nbsp;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if(actualPath.indexOf('http://')===0 || actualPath.indexOf('https://')===0)
+        {
+<span class="cstat-no" title="statement not covered" >            return actualPath;</span>
+        }
+        else
+        {
+            var sep='';
+            <span class="missing-if-branch" title="if path not taken" >I</span>if( basePath.charAt(basePath.length - 1)!=="/"  &amp;&amp; actualPath.charAt(0)!=="/")
+            {
+<span class="cstat-no" title="statement not covered" >                sep='/';</span>
+            }
+&nbsp;
+            return basePath + sep + actualPath;
+        }
+    }
+&nbsp;
+    var MojioClientLite = (function() {
+        function MojioClientLite(conf) {
+&nbsp;
+            this.authorize = bind(this.authorize, this);
+            this.logout = bind(this.logout, this);
+            this.token = bind(this.token, this);
+            this.header = bind(this.header, this);
+            this.query = bind(this.query, this);
+            this.getPath = bind(this.getPath, this);
+            this.get = bind(this.get, this);
+            this.push = bind(this.push, this);
+            this.put = bind(this.put, this);
+            this.post = bind(this.post, this);
+            this.delete = bind(this.delete, this);
+            this.permissions = bind(this.permissions, this);
+            this.image = bind(this.image, this);
+            this.tags = bind(this.tags, this);
+            this.app = bind(this.app, this);
+            this.vehicle = bind(this.vehicle, this);
+            this.user = bind(this.user, this);
+            this.geofence = bind(this.geofence, this);
+            this.group = bind(this.group, this);
+            this.trip = bind(this.trip, this);
+            this.mojio = bind(this.mojio, this);
+            this.refreshToken = bind(this.refreshToken, this);
+&nbsp;
+            var defConfig = {
+                environment: '',
+                accountsURL: 'accounts.moj.io',
+                apiURL: 'api.moj.io',
+                pushURL: 'push.moj.io',
+                wsURL: 'api.moj.io',
+                redirect_uri: (typeof window!=="undefined")?<span class="branch-0 cbranch-no" title="branch not covered" >window.location.href.replace('http:', 'https:').split('#')[0]:</span>'',
+                scope: 'full',
+                acceptLanguage: 'en',
+                dataStorage:{},
+                tokenRequester: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return document.location.hash.match(/access_token=([0-9a-f-]{36})/)[1];</span>
+                },
+            };
+            var env = 'https://';
+            var wsEnv = 'wss://';
+            this.config = extend({}, defConfig, conf);
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.environment !== '') {
+<span class="cstat-no" title="statement not covered" >                env = env + this.config.environment + '-';</span>
+<span class="cstat-no" title="statement not covered" >                wsEnv = wsEnv + this.config.environment + '-';</span>
+            }
+            this.config.accountsURL = env + this.config.accountsURL;
+            this.config.apiURL = env + this.config.apiURL;
+            this.config.pushURL = env + this.config.pushURL;
+            this.config.wsURL = wsEnv + this.config.wsURL;
+&nbsp;
+            return
+        }
+&nbsp;
+        MojioClientLite.prototype.authorize = function(user,password) {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if(typeof(user)!="undefined")
+            {
+                var _this=this;
+&nbsp;
+                header={'Content-Type': 'x-www-form-urlencoded'};
+                data={
+                    userName : user,
+                    password: password,
+                    grant_type: 'password',
+                    client_id: _this.config.application,
+                    client_secret: _this.config.secret
+                }
+&nbsp;
+                return new Promise(function(resolve, reject) {
+                    return $http(pathConcat(_this.config.accountsURL,'/oauth2/token')).post(data, extend({}, _this.header(), header)).then(<span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >                        res=JSON.parse(data);</span>
+<span class="cstat-no" title="statement not covered" >                        _this.config.access_token=res.access_token;</span>
+<span class="cstat-no" title="statement not covered" >                        _this.config.refresh_token=res.refresh_token;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                        return resolve(res);</span>
+                    }, function(data) {
+                        return reject(data);
+                    });
+                });
+&nbsp;
+            }
+            else {
+<span class="cstat-no" title="statement not covered" >                if (typeof module !== 'undefined' &amp;&amp; typeof module.exports !== 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >                    console.log("For anything other that browser please use authorize(user,password)");</span>
+<span class="cstat-no" title="statement not covered" >                    return;</span>
+                }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                window.location.href=this.config.accountsURL + '/OAuth2/authorize?' +</span>
+                    'response_type=token&amp;client_id=' + this.config.application +
+                    '&amp;redirect_uri=' + this.config.redirect_uri +
+                    '&amp;scope=' + this.config.scope;
+            }
+<span class="cstat-no" title="statement not covered" >            return</span>
+        };
+&nbsp;
+        MojioClientLite.prototype.logout = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            if (typeof module !== 'undefined' &amp;&amp; typeof module.exports !== 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >                console.log("This method is only for client side (in browser).");</span>
+<span class="cstat-no" title="statement not covered" >                return;</span>
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            window.location.href=this.config.accountsURL + '/OAuth2/authorize?' +</span>
+                'response_type=token&amp;prompt=login&amp;client_id=' + this.config.application +
+                '&amp;redirect_uri=' + this.config.redirect_uri +
+                '&amp;scope=' + this.config.scope;
+        };
+&nbsp;
+        MojioClientLite.prototype.refreshToken = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            header={'Content-Type': 'x-www-form-urlencoded'};</span>
+<span class="cstat-no" title="statement not covered" >            data={</span>
+                refresh_token : _this.config.refresh_token,
+                grant_type: 'refresh_token',
+                client_id: _this.config.application,
+                client_secret: _this.config.secret
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return new Promise(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >                return $http(pathConcat(_this.config.accountsURL,'/oauth2/token')).post(data, extend({}, _this.header(), header)).then(<span class="fstat-no" title="function not covered" >function(data) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    res=JSON.parse(data);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    _this.config.access_token=res.access_token;</span>
+<span class="cstat-no" title="statement not covered" >                    _this.config.refresh_token=res.refresh_token;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    return resolve(res);</span>
+                }, <span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >                    return reject(data);</span>
+                });
+            });
+        };
+&nbsp;
+        MojioClientLite.prototype.token = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            var param = window.location.toString().split('#')[1];</span>
+<span class="cstat-no" title="statement not covered" >            var found = false;</span>
+<span class="cstat-no" title="statement not covered" >            if (typeof param !== 'undefined' &amp;&amp; param.indexOf('access_token=') !== -1) {</span>
+<span class="cstat-no" title="statement not covered" >                try {</span>
+<span class="cstat-no" title="statement not covered" >                    var access_token = this.config.tokenRequester();</span>
+<span class="cstat-no" title="statement not covered" >                    if (access_token) {</span>
+<span class="cstat-no" title="statement not covered" >                        this.config.access_token = access_token;</span>
+<span class="cstat-no" title="statement not covered" >                        this.config.dataStorage[ACCESSTOKENSTORAGE]=this.config.access_token;</span>
+<span class="cstat-no" title="statement not covered" >                        found = true;</span>
+                    }
+                } catch (error) {
+<span class="cstat-no" title="statement not covered" >                    found = false;</span>
+                }
+            } else {
+<span class="cstat-no" title="statement not covered" >                var temp = this.config.dataStorage[ACCESSTOKENSTORAGE];</span>
+<span class="cstat-no" title="statement not covered" >                if (typeof(temp)!="undefined" &amp;&amp; temp != null &amp;&amp; temp !== null &amp;&amp; temp.length !== 0) {</span>
+<span class="cstat-no" title="statement not covered" >                    this.config.access_token = temp;</span>
+<span class="cstat-no" title="statement not covered" >                    found = true;</span>
+                }
+            }
+<span class="cstat-no" title="statement not covered" >            return found;</span>
+        };
+&nbsp;
+        MojioClientLite.prototype.header = function() {
+            return {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + this.config.access_token,
+                'Accept-Language': this.config.acceptLanguage,
+                'Content-Type': 'application/json'
+            }
+        };
+&nbsp;
+        MojioClientLite.prototype.query = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            var qc = (<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="fstat-no" title="function not covered" >                function qc() {</span>
+<span class="cstat-no" title="statement not covered" >                    this.prepare = bind(this.prepare, this);</span>
+<span class="cstat-no" title="statement not covered" >                    this.orderby = bind(this.orderby, this);</span>
+<span class="cstat-no" title="statement not covered" >                    this.select = bind(this.select, this);</span>
+<span class="cstat-no" title="statement not covered" >                    this.filter = bind(this.filter, this);</span>
+<span class="cstat-no" title="statement not covered" >                    this.skip = bind(this.skip, this);</span>
+<span class="cstat-no" title="statement not covered" >                    this.top = bind(this.top, this);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    this.data={};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    return</span>
+                }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                qc.prototype.top = <span class="fstat-no" title="function not covered" >function(top) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    this.data.top = top;</span>
+<span class="cstat-no" title="statement not covered" >                    return this;</span>
+                };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                qc.prototype.skip = <span class="fstat-no" title="function not covered" >function(skip) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    this.data.skip = skip;</span>
+<span class="cstat-no" title="statement not covered" >                    return this;</span>
+                };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                qc.prototype.filter = <span class="fstat-no" title="function not covered" >function(filter) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    this.data.filter = filter;</span>
+<span class="cstat-no" title="statement not covered" >                    return this;</span>
+                };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                qc.prototype.select = <span class="fstat-no" title="function not covered" >function(select) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    this.data.select = select;</span>
+<span class="cstat-no" title="statement not covered" >                    return this;</span>
+                };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                qc.prototype.orderby = <span class="fstat-no" title="function not covered" >function(orderby) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    this.data.orderby = orderby;</span>
+<span class="cstat-no" title="statement not covered" >                    return this;</span>
+                };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                qc.prototype.prepare = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >                    return this.data;</span>
+                };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                return qc;</span>
+&nbsp;
+            })();
+<span class="cstat-no" title="statement not covered" >            return new qc();</span>
+        };
+&nbsp;
+        MojioClientLite.prototype.getPath = <span class="fstat-no" title="function not covered" >function(path, data, header) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            data = data || {};</span>
+<span class="cstat-no" title="statement not covered" >            if (data.prepare != null) {</span>
+<span class="cstat-no" title="statement not covered" >                data = data.prepare();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            return new Promise(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >                return $http(pathConcat(_this.config.apiURL,path)).get(data, extend({}, _this.header(), header || {})).then(<span class="fstat-no" title="function not covered" >function(data) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    return resolve(JSON.parse(data));</span>
+                }, <span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >                    return reject(data);</span>
+                });
+            });
+        };
+&nbsp;
+        MojioClientLite.prototype.get = function() {
+            var _this=this;
+&nbsp;
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (arguments.length === 0) {
+                return {
+                    me: <span class="fstat-no" title="function not covered" >function(data, header) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/me', data, header);}</span>,
+                    users: <span class="fstat-no" title="function not covered" >function(data, header) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/users', data, header)}</span>,
+                    mojios: <span class="fstat-no" title="function not covered" >function(data, header) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/mojios', data, header)}</span>,
+                    vehicles: <span class="fstat-no" title="function not covered" >function(data, header) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles', data, header)}</span>,
+                    apps: <span class="fstat-no" title="function not covered" >function(data, header) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/apps', data, header)}</span>,
+                    groups: <span class="fstat-no" title="function not covered" >function(data, header) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/groups', data, header)}</span>,
+                    trips: <span class="fstat-no" title="function not covered" >function(data, header) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/trips', data, header)}</span>,
+                    geofences: <span class="fstat-no" title="function not covered" >function(data, header) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/geofences', data, header)}</span>,
+                    user: <span class="fstat-no" title="function not covered" >function(id) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/users/' + id)}</span>,
+                    mojio: <span class="fstat-no" title="function not covered" >function(id) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/mojios/' + id)}</span>,
+                    vehicle: <span class="fstat-no" title="function not covered" >function(id) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles/' + id)}</span>,
+                    app: <span class="fstat-no" title="function not covered" >function(id) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/apps/' + id)}</span>,
+                    group: <span class="fstat-no" title="function not covered" >function(id) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/groups/' + id)}</span>,
+                    trip: <span class="fstat-no" title="function not covered" >function(id) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/trips/' + id)}</span>,
+                    geofence: <span class="fstat-no" title="function not covered" >function(id) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/geofences/' + id)}</span>
+                }
+            } else {
+<span class="cstat-no" title="statement not covered" >                return this.getPath(arguments[0], arguments[1] || {});</span>
+            }
+        };
+&nbsp;
+        MojioClientLite.prototype.push = function() {
+            var _this=this;
+&nbsp;
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (arguments.length === 0) {
+                return {
+                    mojios: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.push('/v2/mojios')}</span>,
+                    vehicles: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.push('/v2/vehicles')}</span>,
+                    mojio: <span class="fstat-no" title="function not covered" >function(obj) {<span class="cstat-no" title="statement not covered" ></span>return _this.push('/v2/mojios/' + obj.Id)}</span>,
+                    vehicle: <span class="fstat-no" title="function not covered" >function(obj) {<span class="cstat-no" title="statement not covered" ></span>return _this.push('/v2/vehicles/' + obj.Id)}</span>
+                };
+            } else {
+<span class="cstat-no" title="statement not covered" >                var ws;</span>
+<span class="cstat-no" title="statement not covered" >                if (typeof module !== 'undefined' &amp;&amp; typeof module.exports !== 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >                    var WebSocket = require('ws');</span>
+<span class="cstat-no" title="statement not covered" >                    ws = new WebSocket(this.config.wsURL + arguments[0], this.config.access_token);</span>
+                }
+                else {
+<span class="cstat-no" title="statement not covered" >                    ws = new WebSocket(this.config.wsURL + arguments[0], this.config.access_token);</span>
+                }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                return ws;</span>
+            }
+        };
+&nbsp;
+        MojioClientLite.prototype.put = <span class="fstat-no" title="function not covered" >function(path, data,header) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return new Promise(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >                return $http(pathConcat(_this.config.apiURL,path)).put(data || {}, extend({}, _this.header(), header || {})).then(<span class="fstat-no" title="function not covered" >function(data) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    return resolve(JSON.parse(data));</span>
+                }, <span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >                    return reject(data);</span>
+                });
+            });
+        };
+&nbsp;
+        MojioClientLite.prototype.post = <span class="fstat-no" title="function not covered" >function(path, data,header) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return new Promise(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >                return $http(pathConcat(_this.config.apiURL,path)).post(data || {}, extend({}, _this.header(), header || {})).then(<span class="fstat-no" title="function not covered" >function(data) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    return resolve(JSON.parse(data));</span>
+                }, <span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >                    return reject(data);</span>
+                });
+            });
+        };
+&nbsp;
+        MojioClientLite.prototype.delete = <span class="fstat-no" title="function not covered" >function(path, data,header) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return new Promise(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >                return $http(pathConcat(_this.config.apiURL,path))["delete"](data || {}, extend({}, _this.header(), header || {})).then(<span class="fstat-no" title="function not covered" >function(data) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    return resolve(JSON.parse(data));</span>
+                }, <span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >                    return reject(data);</span>
+                });
+            });
+        };
+&nbsp;
+        MojioClientLite.prototype.permissions = <span class="fstat-no" title="function not covered" >function(path, oid) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                get: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath(path + '/' + oid + '/permissions')}</span>,
+                delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete(path + '/' + oid + '/permissions')}</span>,
+                put: <span class="fstat-no" title="function not covered" >function(data) {<span class="cstat-no" title="statement not covered" ></span>return _this.put(path + '/' + oid + '/permissions', data)}</span>,
+                post: <span class="fstat-no" title="function not covered" >function(data) {<span class="cstat-no" title="statement not covered" ></span>return _this.post(path + '/' + oid + '/permissions', data)}</span>
+            };
+        };
+&nbsp;
+        MojioClientLite.prototype.image = <span class="fstat-no" title="function not covered" >function(path, oid) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                get: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath(path + '/' + oid + '/image')}</span>,
+                delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete(path + '/' + oid + '/image')}</span>,
+                put: <span class="fstat-no" title="function not covered" >function(data) {<span class="cstat-no" title="statement not covered" ></span>return _this.put(path + '/' + oid + '/image', data, {'Content-Type': 'multipart/form-data'})}</span>,
+                post: <span class="fstat-no" title="function not covered" >function(data) {<span class="cstat-no" title="statement not covered" ></span>return _this.post(path + '/' + oid + '/image', data, {'Content-Type': 'multipart/form-data'})}</span>
+            };
+        };
+&nbsp;
+        MojioClientLite.prototype.tags = <span class="fstat-no" title="function not covered" >function(path, oid) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                delete: <span class="fstat-no" title="function not covered" >function(tag) {<span class="cstat-no" title="statement not covered" ></span>return _this.delete(path + '/' + oid + '/tags/' + tag)}</span>,
+                post: <span class="fstat-no" title="function not covered" >function(tag) {<span class="cstat-no" title="statement not covered" ></span>return _this.post(path + '/' + oid + '/tags/' + tag)}</span>
+            };
+        };
+&nbsp;
+        MojioClientLite.prototype.app = <span class="fstat-no" title="function not covered" >function(obj) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                put: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.put('/v2/apps/' + obj.Id, obj)}</span>,
+                post: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.post('/v2/apps', obj)}</span>,
+                delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete('/v2/apps/' + obj.Id)}</span>,
+                secret: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return {</span>
+                        get: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/apps/' + obj.Id + '/secret')}</span>,
+                        delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete('/v2/apps/' + obj.Id + '/secret')}</span>
+                    }
+                },
+                image: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.image('/v2/apps', obj.Id)}</span>,
+                permission: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/apps/' + obj.Id + '/permission')}</span>,
+                permissions: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.permissions('/v2/apps', obj.Id)}</span>,
+                tags: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.tags('/v2/apps', obj.Id)}</span>
+            };
+        };
+&nbsp;
+        MojioClientLite.prototype.vehicle = <span class="fstat-no" title="function not covered" >function(obj) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                put: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.put('/v2/vehicles/' + obj.Id, obj)}</span>,
+                post: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.post('/v2/vehicles', obj)}</span>,
+                delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete('/v2/vehicles/' + obj.Id)}</span>,
+                address: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles/' + obj.Id + '/address')}</span>,
+                trips: <span class="fstat-no" title="function not covered" >function(data) {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles/' + obj.Id + '/trips', data)}</span>,
+                vin: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles/' + obj.Id + '/vin')}</span>,
+                serviceschedule: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles/' + obj.Id + '/serviceschedule')}</span>,
+                serviceschedulenext: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles/' + obj.Id + '/serviceschedulenext')}</span>,
+                history: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return {</span>
+                        states: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles/' + obj.Id + '/history/states')}</span>,
+                        locations: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles/' + obj.Id + '/history/locations')}</span>
+                    };
+                },
+                image: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.image('/v2/vehicles', obj.Id)}</span>,
+                permission: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/vehicles/' + obj.Id + '/permission')}</span>,
+                permissions: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.permissions('/v2/vehicles', obj.Id)}</span>,
+                tags: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.tags('/v2/vehicles', obj.Id)}</span>
+            };
+        };
+&nbsp;
+        MojioClientLite.prototype.user = <span class="fstat-no" title="function not covered" >function(obj) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                put: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.put('/v2/users/' + obj.Id, obj)}</span>,
+                post: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.post('/v2/users', obj)}</span>,
+                delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete('/v2/users/' + obj.Id)}</span>,
+                vehicles: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/users/' + obj.Id + '/vehicles')}</span>,
+                mojios: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/users/' + obj.Id + '/mojios')}</span>,
+                trips: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/users/' + obj.Id + '/trips')}</span>,
+                groups: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/users/' + obj.Id + '/groups')}</span>,
+                image: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.image('/v2/users', obj.Id)}</span>,
+                permission: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/users/' + obj.Id + '/permission')}</span>,
+                permissions: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.permissions('/v2/users', obj.Id)}</span>,
+                tags: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.tags('/v2/users', obj.Id)}</span>
+            };
+        };
+&nbsp;
+        MojioClientLite.prototype.geofence = <span class="fstat-no" title="function not covered" >function(obj) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                put: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.put('/v2/geofences/' + obj.Id, obj)}</span>,
+                post: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.post('/v2/geofences', obj)}</span>,
+                delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete('/v2/geofences/' + obj.Id)}</span>
+            };
+        };
+&nbsp;
+        MojioClientLite.prototype.group = <span class="fstat-no" title="function not covered" >function(obj) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                put: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.put('/v2/groups/' + obj.Id, obj)}</span>,
+                post: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.post('/v2/groups', obj)}</span>,
+                delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete('/v2/groups/' + obj.Id)}</span>,
+                users: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return {</span>
+                        get: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/groups/' + obj.Id + '/users')}</span>,
+                        delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete('/v2/groups/' + obj.Id + '/users')}</span>,
+                        put: <span class="fstat-no" title="function not covered" >function(data) {<span class="cstat-no" title="statement not covered" ></span>return _this.put('/v2/groups/' + obj.Id + '/users', data)}</span>,
+                        post: <span class="fstat-no" title="function not covered" >function(data) {<span class="cstat-no" title="statement not covered" ></span>return _this.post('/v2/groups/' + obj.Id + '/users', data)}</span>
+                    };
+                },
+                permission: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/groups/' + obj.Id + '/permission')}</span>,
+                permissions: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.permissions('/v2/groups', obj.Id)}</span>,
+                tags: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.tags('/v2/groups', obj.Id)}</span>
+            };
+        };
+&nbsp;
+        MojioClientLite.prototype.trip = <span class="fstat-no" title="function not covered" >function(obj) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                put: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.put('/v2/trips/' + obj.Id, obj)}</span>,
+                delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete('/v2/trips/' + obj.Id)}</span>,
+                history: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return {</span>
+                        states: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/trips/' + obj.Id + '/history/states')}</span>,
+                        locations: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/trips/' + obj.Id + '/history/locations')}</span>
+                    }
+                },
+                permission: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/trips/' + obj.Id + '/permission')}</span>,
+                permissions: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.permissions('/v2/trips', obj.Id)}</span>,
+                tags: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.tags('/v2/trips', obj.Id)}</span>
+            };
+        };
+&nbsp;
+        MojioClientLite.prototype.mojio = <span class="fstat-no" title="function not covered" >function(obj) {</span>
+<span class="cstat-no" title="statement not covered" >            var _this=this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                put: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.put('/v2/mojios' + '/' + obj.Id, obj)}</span>,
+                post: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.post('/v2/mojios', obj)}</span>,
+                delete: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.delete('/v2/mojios' + '/' + obj.Id)}</span>,
+                permission: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.getPath('/v2/mojios' + '/' + obj.Id + '/permission')}</span>,
+                permissions: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.permissions('/v2/mojios', obj.Id)}</span>,
+                tags: <span class="fstat-no" title="function not covered" >function() {<span class="cstat-no" title="statement not covered" ></span>return _this.tags('/v2/mojios', obj.Id)}</span>
+            };
+        };
+&nbsp;
+        return MojioClientLite;
+&nbsp;
+    })();
+&nbsp;
+&nbsp;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof module !== 'undefined' &amp;&amp; typeof module.exports !== 'undefined') {
+        module.exports = MojioClientLite;
+    }
+    else {
+<span class="cstat-no" title="statement not covered" >        if (typeof define === 'function' &amp;&amp; define.amd) {</span>
+<span class="cstat-no" title="statement not covered" >            define([], <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >                return MojioClientLite;</span>
+            });
+        }
+        else {
+<span class="cstat-no" title="statement not covered" >            window.MojioClientLite = MojioClientLite;</span>
+        }
+    }
+&nbsp;
+})();</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Mar 03 2017 15:33:37 GMT-0800 (PST)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
