@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="16dfdecc-0271-4d68-98fc-a414865fe98a" name="Default" comment="Changed api environments - api.moj.io references have been updated to rogers-api.moj.io, and accounts.moj.io have been updated to identity">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/archive/CodingWalkthrough.md" afterPath="$PROJECT_DIR$/archive/CodingWalkthrough.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MojioClientLite.js" afterPath="$PROJECT_DIR$/src/MojioClientLite.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -18,21 +17,21 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MojioClientLite.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MojioClientLite.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MojioClientLite.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="161" column="31" lean-forward="false" selection-start-line="161" selection-start-column="31" selection-end-line="161" selection-end-column="31" />
+            <state relative-caret-position="401">
+              <caret line="249" column="40" lean-forward="true" selection-start-line="249" selection-start-column="40" selection-end-line="249" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CodingWalkthrough.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CodingWalkthrough.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/archive/CodingWalkthrough.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="359">
-              <caret line="40" column="38" lean-forward="true" selection-start-line="40" selection-start-column="38" selection-end-line="40" selection-end-column="38" />
+              <caret line="40" column="38" lean-forward="false" selection-start-line="40" selection-start-column="38" selection-end-line="40" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -52,11 +51,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>accounts.</find>
-      <find>accounts.mo</find>
-      <find>accounts.moj</find>
-      <find>accounts.moj.</find>
-      <find>accounts.moj.io</find>
       <find>api.moj.io</find>
       <find>ap.moj.io</find>
       <find>a.moj.io</find>
@@ -76,12 +70,17 @@
       <find>push.</find>
       <find>push.mo</find>
       <find>r</find>
-      <find>push.moj</find>
       <find>rogers</find>
       <find>ca</find>
       <find>c</find>
       <find>ro</find>
       <find>roger</find>
+      <find>x-www</find>
+      <find>push.moj</find>
+      <find>x</find>
+      <find>x-w</find>
+      <find>x-ww</find>
+      <find>x-</find>
     </findStrings>
     <dirStrings>
       <dir>C:\Users\c_man\WebstormProjects\MojioClientLite\src\test</dir>
@@ -100,8 +99,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/app.ts" />
-        <option value="$PROJECT_DIR$/src/MojioClientLite.js" />
         <option value="$PROJECT_DIR$/archive/CodingWalkthrough.md" />
+        <option value="$PROJECT_DIR$/src/MojioClientLite.js" />
       </list>
     </option>
   </component>
@@ -281,12 +280,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1499961073654</updated>
-      <workItem from="1499961074926" duration="7641000" />
+      <workItem from="1499961074926" duration="10086000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7641000" />
+    <option name="totallyTimeSpent" value="10086000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2309" y="-89" width="1538" height="1153" extended-state="0" />
@@ -357,18 +356,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MojioClientLite.js">
+    <entry file="file://$PROJECT_DIR$/archive/CodingWalkthrough.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="161" column="31" lean-forward="false" selection-start-line="161" selection-start-column="31" selection-end-line="161" selection-end-column="31" />
+        <state relative-caret-position="359">
+          <caret line="40" column="38" lean-forward="false" selection-start-line="40" selection-start-column="38" selection-end-line="40" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/archive/CodingWalkthrough.md">
+    <entry file="file://$PROJECT_DIR$/src/MojioClientLite.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="40" column="38" lean-forward="true" selection-start-line="40" selection-start-column="38" selection-end-line="40" selection-end-column="38" />
+        <state relative-caret-position="401">
+          <caret line="249" column="40" lean-forward="true" selection-start-line="249" selection-start-column="40" selection-end-line="249" selection-end-column="40" />
           <folding />
         </state>
       </provider>

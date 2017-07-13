@@ -40,6 +40,7 @@
                         payload = null;
                     }
                     client.open(method, url);
+
                     var content_type = 'application/x-www-form-urlencoded';
                     for (var h in headers) {
                         if (headers.hasOwnProperty(h)) {
@@ -186,9 +187,9 @@
             {
                 var _this=this;
 
-                header={'Content-Type': 'x-www-form-urlencoded'};
+                header={'Content-Type': 'application/x-www-form-urlencoded'};
                 data={
-                    userName : user,
+                    userName : user, //TODO
                     password: password,
                     grant_type: 'password',
                     client_id: _this.config.application,
@@ -237,7 +238,7 @@
         MojioClientLite.prototype.refreshToken = function() {
             var _this=this;
 
-            header={'Content-Type': 'x-www-form-urlencoded'};
+            header={'Content-Type': 'application/x-www-form-urlencoded'};
             data={
                 refresh_token : _this.config.refresh_token,
                 grant_type: 'refresh_token',
