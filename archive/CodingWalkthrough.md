@@ -30,8 +30,8 @@ Once you have included the SDK, connecting to our API is as simple as:
       application: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' // your application ID
       environment: '' // staging, develope, ...
       accountsURL: 'identity.moj.io'
-      apiURL: 'rogers-api.moj.io'
-      pushURL: 'rogers-push.moj.io'
+      apiURL: 'can-api.moj.io'
+      pushURL: 'can-push.moj.io'
       redirect_uri:"your application redirect url", //it will be current url if not specify
       scope:'full'
       acceptLanguage:'en'
@@ -59,8 +59,8 @@ var mojio_client = new MojioClientLite(config);
       secret:  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' // your application secret
       environment: '' // staging, develope, ...
       accountsURL: 'identity.moj.io'
-      apiURL: 'rogers-api.moj.io'
-      pushURL: 'rogers-push.moj.io'
+      apiURL: 'can-api.moj.io'
+      pushURL: 'can-push.moj.io'
       scope:'full'
       acceptLanguage:'en'
     }
