@@ -156,7 +156,7 @@
                 environment: '',
                 accountsURL: 'identity.moj.io',
                 apiURL: 'rogers-api.moj.io',
-                pushURL: 'push.moj.io',
+                pushURL: 'rogers-push.moj.io',
                 wsURL: 'rogers-api.moj.io',
                 redirect_uri: (typeof window!=="undefined")?window.location.href.replace('http:', 'https:').split('#')[0]:'',
                 scope: 'admin',
@@ -620,3 +620,4 @@
     }
 
 })();
+
