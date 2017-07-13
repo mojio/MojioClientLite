@@ -154,10 +154,10 @@
 
             var defConfig = {
                 environment: '',
-                accountsURL: 'accounts.moj.io',
-                apiURL: 'api.moj.io',
+                accountsURL: 'identity.moj.io',
+                apiURL: 'rogers-api.moj.io',
                 pushURL: 'push.moj.io',
-                wsURL: 'api.moj.io',
+                wsURL: 'rogers-api.moj.io',
                 redirect_uri: (typeof window!=="undefined")?window.location.href.replace('http:', 'https:').split('#')[0]:'',
                 scope: 'admin',
                 acceptLanguage: 'en',
