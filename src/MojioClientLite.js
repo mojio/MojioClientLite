@@ -243,7 +243,7 @@
         MojioClientLite.prototype.refreshToken = function() {
             var _this=this;
 
-            header={'Content-Type': 'application/x-www-form-urlencoded'};
+            header={'Content-Type': this.config.headerContentType};
             data={
                 refresh_token : _this.config.refresh_token,
                 grant_type: 'refresh_token',
