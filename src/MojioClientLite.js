@@ -155,6 +155,7 @@
 
             var defConfig = {
                 environment: '',
+                headerContentType: 'x-www-form-urlencoded',
                 accountsURL: 'identity.moj.io',
                 apiURL: 'can-api.moj.io',
                 pushURL: 'can-push.moj.io',
@@ -174,6 +175,7 @@
                 env = env + this.config.environment + '-';
                 wsEnv = wsEnv + this.config.environment + '-';
             }
+            this.config.headerContentType = this.config.headerContentType;
             this.config.accountsURL = env + this.config.accountsURL;
             this.config.apiURL = env + this.config.apiURL;
             this.config.pushURL = env + this.config.pushURL;
@@ -187,7 +189,7 @@
             {
                 var _this=this;
 
-                header={'Content-Type': 'application/x-www-form-urlencoded'};
+                header={'Content-Type': this.config.headerContentType};
                 data={
                     userName : user, //TODO
                     password: password,
