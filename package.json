@@ -1,6 +1,6 @@
 {
   "name": "mojio-client-lite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Mojio javascript REST client.",
   "main": "src/MojioClientLite.js",
   "scripts": {
