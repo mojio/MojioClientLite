@@ -198,6 +198,9 @@
                     client_secret: _this.config.secret
                 }
 
+                console.log("header: " + this.config.headerContentType + " username: " + data.userName + " password: " + data.password + " clientId: " + data.client_id
+                    + " clientSecret: " + data.client_secret);
+
                 return new Promise(function(resolve, reject) {
                     return $http(pathConcat(_this.config.accountsURL,'/oauth2/token')).post(data, extend({}, _this.header(), header)).then(function(data) {
                         res=JSON.parse(data);
