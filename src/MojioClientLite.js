@@ -63,14 +63,14 @@
                             resolve(this.responseText);
                         } else {
                             err=this.statusText;
-                            if(err==null || err.length==0)
+                            if(err===null || err.length===0)
                                 err=this.responseText
                             reject(err);
                         }
                     };
                     client.onerror = function() {
                         err=this.statusText;
-                        if(err==null || err.length==0)
+                        if(err===null || err.length===0)
                             err=this.responseText
                         reject(err);
                     };
@@ -165,7 +165,7 @@
                 acceptLanguage: 'en',
                 dataStorage:{},
                 tokenRequester: function() {
-                    return document.location.hash.match(/access_token=([0-9a-f-]{36})/)[1];
+                    return document.location.hash.match(/access_token=([0-9a-f-].+?)(&|$)/)[1];
                 },
             };
             var env = 'https://';
@@ -196,10 +196,7 @@
                     grant_type: 'password',
                     client_id: _this.config.application,
                     client_secret: _this.config.secret
-                }
-
-                console.log("header: " + this.config.headerContentType + " username: " + data.userName + " password: " + data.password + " clientId: " + data.client_id
-                    + " clientSecret: " + data.client_secret);
+                };
 
                 return new Promise(function(resolve, reject) {
                     return $http(pathConcat(_this.config.accountsURL,'/oauth2/token')).post(data, extend({}, _this.header(), header)).then(function(data) {

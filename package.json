@@ -1,6 +1,6 @@
 {
   "name": "mojio-client-lite",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Mojio javascript REST client.",
   "main": "src/MojioClientLite.js",
   "scripts": {
@@ -17,12 +17,12 @@
     "SDK",
     "JavaScript"
   ],
-  "author": "Pooya Paridel",
+  "author": "Mojio",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ParidelPooya/MojioClientLite/issues"
+    "url": "https://github.com/mojio/MojioClientLite/issues"
   },
-  "homepage": "https://github.com/ParidelPooya/MojioClientLite#readme",
+  "homepage": "https://github.com/mojio/MojioClientLite#readme",
   "devDependencies": {
     "@types/node": "^8.0.12",
     "chai": "^3.5.0",
